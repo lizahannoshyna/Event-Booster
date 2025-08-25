@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+.active-page {
+    @apply border border-[#DC56C5] rounded-tl-[10px] rounded-br-[10px];
+    p {
+        @apply text-[#DC56C5];
+    }
+}
