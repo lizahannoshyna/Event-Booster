@@ -1,33 +1,24 @@
-name: Build and Deploy
+name: Build and deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main  # ветка, с которой деплоим
+    branches: [main]
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2.3.1
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
+      - name: Install and Build 🔧
+        run: |
+          npm ci
+          npm run build
+          
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@4.1.0
         with:
-          node-version: 18
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Build project
-        run: npm run build  # убедись, что билд кладёт файлы в dist/
-
-      - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4.1.0
-        with:
-          branch: gh-pages  # ветка для публикации
-          folder: dist      # папка с готовым билдом
-          clean: true
-          nojekyll: true    # отключаем Jekyll
+          branch: gh-pages
+          folder: dist
+          token: ${{ secrets.GITHUB_TOKEN }}
